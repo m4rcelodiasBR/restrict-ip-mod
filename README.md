@@ -1,3 +1,10 @@
+## Nota 
+Esse módulo foi modificado para atender as necessidades do pessoal que estão com dificuldades
+em fazer o módulo funcionar em seus respectivos ambientes intranet.
+Alterado por 2SG(PD) Marcelo Dias
+
+Deve ser criado um node com o alias "acesso-restrito" para o bom funcionamento. Boa sorte
+
 # Whitelisting IPs in settings.php
 
 ## Table of Contents
