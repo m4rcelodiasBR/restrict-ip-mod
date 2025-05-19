@@ -1,0 +1,144 @@
+<?php
+
+/**
+ * @file
+ * Contains the database schema used by the restrict IP module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function restrict_ip_schema(): array {
+  $schema['restrict_ip_whitelisted_ip_addresses'] = [
+    'description' => 'Stores IP addresses whitelisted in the Restrict IP module',
+    'fields' => [
+      'ip_address' => [
+        'description' => 'A Whitelisted IP address',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+    ],
+    'indexes' => [
+      'ip_address' => ['ip_address'],
+    ],
+    'primary key' => ['ip_address'],
+  ];
+
+  $schema['restrict_ip_paths'] = [
+    'description' => 'Stores white and black listed paths for the Restrict IP module',
+    'fields' => [
+      'type' => [
+        'description' => 'The type of the listing, either black or white',
+        'type' => 'varchar',
+        'length' => 5,
+      ],
+      'path' => [
+        'description' => 'The path to be white/blacklisted',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+    ],
+    'indexes' => [
+      'type_path' => ['type', 'path'],
+    ],
+    'primary key' => ['path'],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Install new database tables.
+ */
+function restrict_ip_update_8001(): void {
+  \Drupal::database()->schema()->createTable('restrict_ip_whitelisted_ip_addresses',
+    [
+      'description' => 'Stores IP addresses whitelisted in the Restrict IP module',
+      'fields' => [
+        'ip_address' => [
+          'description' => 'A Whitelisted IP address',
+          'type' => 'varchar',
+          'length' => 255,
+        ],
+      ],
+      'indexes' => [
+        'ip_address' => ['ip_address'],
+      ],
+    ]);
+
+  \Drupal::database()->schema()->createTable('restrict_ip_paths',
+    [
+      'description' => 'Stores white and black listed paths for the Restrict IP module',
+      'fields' => [
+        'type' => [
+          'description' => 'The type of the listing, either black or white',
+          'type' => 'varchar',
+          'length' => 5,
+        ],
+        'path' => [
+          'description' => 'The path to be white/blacklisted',
+          'type' => 'varchar',
+          'length' => 255,
+        ],
+      ],
+      'indexes' => [
+        'type-path' => ['type', 'path'],
+      ],
+    ]);
+}
+
+/**
+ * Adjust index name for database compatibilities.
+ */
+function restrict_ip_update_8002(): void {
+  if (\Drupal::database()->schema()->indexExists('restrict_ip_paths', 'type_path')) {
+    return;
+  }
+
+  \Drupal::database()->schema()->dropIndex('restrict_ip_paths', 'type-path');
+  \Drupal::database()->schema()->addIndex('restrict_ip_paths', 'type_path', [
+    'type',
+    'path',
+  ],
+  // The old table specification (unfortunately this is still needed by this
+  // method):
+  [
+    'fields' => [
+      'type' => [
+        'description' => 'The type of the listing, either black or white',
+        'type' => 'varchar',
+        'length' => 5,
+      ],
+      'path' => [
+        'description' => 'The path to be white/blacklisted',
+        'type' => 'varchar',
+        'length' => 255,
+      ],
+    ],
+  ]);
+}
+
+/**
+ * Add primary keys for tables.
+ */
+function restrict_ip_update_500001(): void {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->indexExists('restrict_ip_paths', 'PRIMARY')) {
+    // Add primary key to "restrict_ip_paths" table.
+    $schema->addPrimaryKey('restrict_ip_paths', ['path']);
+  }
+
+  if (!$schema->indexExists('restrict_ip_whitelisted_ip_addresses', 'PRIMARY')) {
+    // Add primary key to "restrict_ip_whitelisted_ip_addresses" table.
+    $schema->addPrimaryKey('restrict_ip_whitelisted_ip_addresses', ['ip_address']);
+  }
+}
+
+/**
+ * Resave config.
+ */
+function restrict_ip_update_500002(): void {
+  \Drupal::configFactory()->getEditable('restrict_ip.settings')->save();
+}

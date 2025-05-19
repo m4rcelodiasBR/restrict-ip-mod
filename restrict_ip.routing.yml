@@ -1,0 +1,18 @@
+restrict_ip.admin_page:
+  path: '/admin/config/people/restrict_ip'
+  defaults:
+    _title: 'IP Address Whitelist'
+    _controller: 'Drupal\restrict_ip\Controller\PageController::configPage'
+  requirements:
+    _permission: 'administer restricted ip addresses'
+  options:
+    _admin_route: 'true'
+
+restrict_ip.access_denied_page:
+  path: '/restrict_ip/access_denied'
+  defaults:
+    _title: 'Access Denied'
+    _controller: 'Drupal\restrict_ip\Controller\PageController::accessDeniedPage'
+  requirements:
+    # This is the access denied page, so anybody should be able to access it:
+    _access: 'TRUE'

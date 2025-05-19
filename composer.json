@@ -1,0 +1,19 @@
+{
+  "name": "drupal/restrict_ip",
+  "type": "drupal-module",
+  "description": "Allows administrators to restrict access to the site to an administrator defined set of IP addresses.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://drupal.org/project/restrict_ip",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://drupal.org/project/issues/restrict_ip",
+    "source": "https://git.drupalcode.org/project/restrict_ip"
+  },
+  "require": {
+    "drupal/core": "^10.3 || ^11"
+  },
+  "require-dev": {
+    "drupal/ip2country": "^2.1"
+  }
+}

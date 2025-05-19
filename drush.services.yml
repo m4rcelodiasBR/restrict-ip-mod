@@ -1,0 +1,6 @@
+services:
+  restrict_ip.commands:
+    class: \Drupal\restrict_ip\Drush\Commands\RestrictIpCommands
+    arguments: ['@config.factory']
+    tags:
+      - { name: drush.command }
