@@ -5,6 +5,9 @@ Alterado por 2SG(PD) Marcelo Dias
 
 Deve ser criado um node com o alias "acesso-restrito" para o bom funcionamento. Boa sorte
 
+# Download
+Baixe o arquivo compactado restrict-ip.zip
+
 # Whitelisting IPs in settings.php
 
 ## Table of Contents
